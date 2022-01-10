@@ -104,6 +104,51 @@ namespace svg {
         color fill = parse_color(elem->Attribute("fill"));
         return new circle(fill, {cx, cy}, {r,r});
     }
+
+    polygon *parse_polygon(XMLElement *elem) {
+        color fill = parse_color(elem->Attribute("fill"));
+
+        const char* str = elem->Attribute("points");
+        const char* curr;
+        bool is_y_flag = false;
+        int x = 0 , y = 0;
+
+        std::vector<point> vector;
+
+        for(curr = str; *curr != '\0';curr++){
+            if (*curr == ',') is_y_flag = true;
+            else if (*curr == ' '){
+                vector.push_back({x,y});
+                x=0;
+                y=0;
+                is_y_flag = false;
+            }
+            else if (is_y_flag) y = y * 10 + ( (int)(*curr) - 48);
+            else x = x * 10 + ( (int)(*curr) - 48);
+        }
+        vector.push_back({x,y});
+
+        return new polygon(fill,vector);
+    }
+
+    polygon *parse_rect(XMLElement *elem) {
+        color fill = parse_color(elem->Attribute("fill"));
+        int x = elem->IntAttribute("x");
+        int y = elem->IntAttribute("y");
+        int width = elem->IntAttribute("width") - 1;
+        int height = elem->IntAttribute("height") - 1;
+        std::vector<point> vector;
+
+        vector.push_back({x,y});
+        vector.push_back({x,y+height});
+        vector.push_back({x+width,y+height});
+        vector.push_back({x+width,y});
+        //vector.push_back({x,y});
+
+
+        return new rect(fill,vector);
+    }
+
     // TODO other parsing functions for elements
 
     // Loop for parsing shapes
@@ -118,6 +163,10 @@ namespace svg {
                 s = parse_ellipse(child_elem);
             }else if(type == "circle"){
                 s = parse_circle(child_elem);
+            }else if(type == "polygon"){
+                s = parse_polygon(child_elem);
+            }else if(type == "rect"){
+                s = parse_rect(child_elem);
             } else {
                 std::cout << "Unrecognized shape type: " << type << std::endl;
                 continue;

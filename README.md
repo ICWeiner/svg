@@ -9,3 +9,4 @@
 ## Tarefas realizadas
 
 Implemented support for circles
+Implemented support for polygons and rectangles

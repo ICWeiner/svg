@@ -33,24 +33,48 @@ namespace svg {
             ellipse(fill,center,radius) {
 
     }
-    void circle::draw(png_image &img) const {
-        img.draw_ellipse(center, radius, get_color());
-    }
 
-    void circle::translate(const point &t) {
-        center = center.translate(t);
-    }
-    void circle::scale(const point &origin, int v) {
-        radius.x *= v;
-        radius.y *= v;
-        center = center.scale(origin,v);
-    }
-
-    void circle::rotate(const point &origin, int degrees) {
-        center = center.rotate(origin, degrees);
-    }
     shape *circle::duplicate() const {
-        return new ellipse(get_color(), center, radius);
+        return new circle(get_color(), center, radius);
     }
+
+
+
+    polygon::polygon(const svg::color &fill,
+                     const std::vector<point> &points) :
+            shape(fill) , points(points) {
+
+    }
+    void polygon::draw(png_image &img) const {
+        img.draw_polygon(points, get_color());
+    }
+
+    void polygon::translate(const point &t) {
+        for(int i = 0 ; i < points.size(); i++){
+            points.at(i).translate(t);
+        }
+    }
+    void polygon::scale(const point &origin, int v) {
+        for(int i = 0 ; i < points.size(); i++){
+            points.at(i).scale(origin,v);
+        }
+    }
+
+    void polygon::rotate(const point &origin, int degrees) {
+        for(int i = 0 ; i < points.size(); i++){
+            points.at(i).rotate(origin,degrees);
+        }
+    }
+    shape *polygon::duplicate() const {
+        return new polygon(get_color(), points);
+    }
+
+
+
+    rect::rect(const svg::color &fill,
+               const std::vector<point> &points) : polygon(fill,points){
+
+    }
+
 
 }
