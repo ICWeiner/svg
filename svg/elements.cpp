@@ -70,11 +70,48 @@ namespace svg {
     }
 
 
-
     rect::rect(const svg::color &fill,
                const std::vector<point> &points) : polygon(fill,points){
 
     }
 
 
+
+    polyline::polyline(const svg::color &fill,
+                     const std::vector<point> &points) :
+            shape(fill) , points(points) {
+
+    }
+
+    void polyline::draw(png_image &img) const {
+        size_t max = points.size() - 1;
+        for(size_t i = 0; i < max; i++){
+            point a = points.at(i);
+            point b = points.at((i + 1));
+            img.draw_line(a,b,get_color());
+        }
+
+    }
+
+    void polyline::translate(const point &t) {
+
+    }
+    void polyline::scale(const point &origin, int v) {
+
+    }
+
+    void polyline::rotate(const point &origin, int degrees) {
+
+    }
+    shape *polyline::duplicate() const {
+        return new polyline(get_color(), points);
+    }
+
+
+
+    line::line(const svg::color &fill,
+                       const std::vector<point> &points) :
+            polyline(fill,points) {
+
+    }
 }

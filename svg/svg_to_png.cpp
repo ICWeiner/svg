@@ -105,28 +105,13 @@ namespace svg {
         return new circle(fill, {cx, cy}, {r,r});
     }
 
+    std::vector<point> read_points(const char *str);
+
     polygon *parse_polygon(XMLElement *elem) {
         color fill = parse_color(elem->Attribute("fill"));
 
         const char* str = elem->Attribute("points");
-        const char* curr;
-        bool is_y_flag = false;
-        int x = 0 , y = 0;
-
-        std::vector<point> vector;
-
-        for(curr = str; *curr != '\0';curr++){
-            if (*curr == ',') is_y_flag = true;
-            else if (*curr == ' '){
-                vector.push_back({x,y});
-                x=0;
-                y=0;
-                is_y_flag = false;
-            }
-            else if (is_y_flag) y = y * 10 + ( (int)(*curr) - 48);
-            else x = x * 10 + ( (int)(*curr) - 48);
-        }
-        vector.push_back({x,y});
+        std::vector<point> vector = read_points(str);
 
         return new polygon(fill,vector);
     }
@@ -145,8 +130,49 @@ namespace svg {
         vector.push_back({x+width,y});
         //vector.push_back({x,y});
 
-
         return new rect(fill,vector);
+    }
+
+    polyline *parse_polyline(XMLElement *elem){
+        color fill = parse_color(elem->Attribute("stroke"));
+        const char* str = elem->Attribute("points");
+        std::vector<point> vector = read_points(str);
+
+        return new polyline(fill,vector);
+    }
+
+    polyline *parse_line(XMLElement *elem){
+        color fill = parse_color(elem->Attribute("stroke"));
+        int x1 = elem->IntAttribute("x1");
+        int y1 = elem->IntAttribute("y1");
+        int x2 = elem->IntAttribute("x2");
+        int y2 = elem->IntAttribute("y2");
+        std::vector<point> vector;
+        vector.push_back({x1,y1});
+        vector.push_back({x2,y2});
+
+        return new line(fill,vector);
+    }
+
+    std::vector<point> read_points(const char *str) {
+        std::vector<point> vector;
+        const char* curr;
+        bool is_y_flag = false;
+        int x = 0 , y = 0;
+
+        for(curr = str; *curr != '\0';curr++){
+            if (*curr == ',') is_y_flag = true;
+            else if (*curr == ' '){
+                vector.push_back({x,y});
+                x=0;
+                y=0;
+                is_y_flag = false;
+            }
+            else if (is_y_flag) y = y * 10 + ( (int)(*curr) - 48);
+            else x = x * 10 + ( (int)(*curr) - 48);
+        }
+        vector.push_back({x,y});
+        return vector;
     }
 
     // TODO other parsing functions for elements
@@ -167,6 +193,10 @@ namespace svg {
                 s = parse_polygon(child_elem);
             }else if(type == "rect"){
                 s = parse_rect(child_elem);
+            }else if(type == "polyline"){
+                s = parse_polyline(child_elem);
+            }else if(type == "line"){
+                s = parse_line(child_elem);
             } else {
                 std::cout << "Unrecognized shape type: " << type << std::endl;
                 continue;
