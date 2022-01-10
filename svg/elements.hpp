@@ -18,5 +18,15 @@ namespace svg {
         shape *duplicate() const override;
     };
 
+    class circle : public ellipse {
+    public:
+        circle(const svg::color &fill, const point &center, const point &radius);
+        void draw(png_image &img) const override;
+        void translate(const point &t) override;
+        void scale(const point &origin, int v) override;
+        void rotate(const point &origin, int v) override;
+        shape *duplicate() const override;
+    };
+
 }
 #endif

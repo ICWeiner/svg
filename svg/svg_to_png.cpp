@@ -96,6 +96,14 @@ namespace svg {
         color fill = parse_color(elem->Attribute("fill"));
         return new ellipse(fill, {cx, cy}, {rx, ry});
     }
+
+    ellipse *parse_circle(XMLElement *elem) {
+        int cx = elem->IntAttribute("cx");
+        int cy = elem->IntAttribute("cy");
+        int r = elem->IntAttribute("r");
+        color fill = parse_color(elem->Attribute("fill"));
+        return new circle(fill, {cx, cy}, {r,r});
+    }
     // TODO other parsing functions for elements
 
     // Loop for parsing shapes
@@ -108,6 +116,8 @@ namespace svg {
             // TODO complete
             if (type == "ellipse") {
                 s = parse_ellipse(child_elem);
+            }else if(type == "circle"){
+                s = parse_circle(child_elem);
             } else {
                 std::cout << "Unrecognized shape type: " << type << std::endl;
                 continue;

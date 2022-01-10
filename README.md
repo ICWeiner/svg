@@ -8,3 +8,4 @@
 
 ## Tarefas realizadas
 
+Implemented support for circles

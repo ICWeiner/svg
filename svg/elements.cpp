@@ -26,4 +26,31 @@ namespace svg {
         return new ellipse(get_color(), center, radius);
     }
 
+
+    circle::circle(const svg::color &fill,
+                     const point &center,
+                     const point &radius) :
+            ellipse(fill,center,radius) {
+
+    }
+    void circle::draw(png_image &img) const {
+        img.draw_ellipse(center, radius, get_color());
+    }
+
+    void circle::translate(const point &t) {
+        center = center.translate(t);
+    }
+    void circle::scale(const point &origin, int v) {
+        radius.x *= v;
+        radius.y *= v;
+        center = center.scale(origin,v);
+    }
+
+    void circle::rotate(const point &origin, int degrees) {
+        center = center.rotate(origin, degrees);
+    }
+    shape *circle::duplicate() const {
+        return new ellipse(get_color(), center, radius);
+    }
+
 }
