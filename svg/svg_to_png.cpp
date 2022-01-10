@@ -125,9 +125,9 @@ namespace svg {
         std::vector<point> vector;
 
         vector.push_back({x,y});
-        vector.push_back({x,y+height});
-        vector.push_back({x+width,y+height});
         vector.push_back({x+width,y});
+        vector.push_back({x+width,y+height});
+        vector.push_back({x,y+height});
         //vector.push_back({x,y});
 
         return new rect(fill,vector);

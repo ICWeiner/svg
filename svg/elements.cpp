@@ -51,18 +51,18 @@ namespace svg {
 
     void polygon::translate(const point &t) {
         for(int i = 0 ; i < points.size(); i++){
-            points.at(i).translate(t);
+            points.at(i) = points.at(i).translate(t);
         }
     }
     void polygon::scale(const point &origin, int v) {
         for(int i = 0 ; i < points.size(); i++){
-            points.at(i).scale(origin,v);
+            points.at(i) = points.at(i).scale(origin,v);
         }
     }
 
     void polygon::rotate(const point &origin, int degrees) {
         for(int i = 0 ; i < points.size(); i++){
-            points.at(i).rotate(origin,degrees);
+            points.at(i) = points.at(i).rotate(origin,degrees);
         }
     }
     shape *polygon::duplicate() const {
@@ -94,15 +94,22 @@ namespace svg {
     }
 
     void polyline::translate(const point &t) {
-
+        for(int i = 0 ; i < points.size(); i++){
+            points.at(i) = points.at(i).translate(t);
+        }
     }
     void polyline::scale(const point &origin, int v) {
-
+        for(int i = 0 ; i < points.size(); i++){
+            points.at(i) = points.at(i).scale(origin,v);
+        }
     }
 
     void polyline::rotate(const point &origin, int degrees) {
-
+        for(int i = 0 ; i < points.size(); i++){
+            points.at(i) = points.at(i).rotate(origin,degrees);
+        }
     }
+
     shape *polyline::duplicate() const {
         return new polyline(get_color(), points);
     }
