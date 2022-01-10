@@ -30,6 +30,7 @@ namespace svg {
         std::vector<point> points;
     public:
         polygon(const svg::color &fill, const std::vector<point> &points);
+        ~polygon();
         void draw(png_image &img) const override;
         void translate(const point &t) override;
         void scale(const point &origin, int v) override;
@@ -47,6 +48,7 @@ namespace svg {
         std::vector<point> points;
     public:
         polyline(const svg::color &fill, const std::vector<point> &points);
+        ~polyline();
         void draw(png_image &img) const override;
         void translate(const point &t) override;
         void scale(const point &origin, int v) override;
@@ -57,6 +59,19 @@ namespace svg {
     class line : public polyline {
     public:
         line(const svg::color &fill, const std::vector<point> &points);
+    };
+
+    class group :public shape{
+    protected:
+        std::vector<shape *> shapes;
+    public:
+        group(const color &c, const std::vector<shape *> &shapes);
+        ~group();
+        void draw(png_image &img) const override;
+        void translate(const point &t) override;
+        void scale(const point &origin, int v) override;
+        void rotate(const point &origin, int v) override;
+        shape *duplicate() const override;
     };
 }
 #endif
