@@ -154,38 +154,6 @@ namespace svg {
         return new line(fill,vector);
     }
 
-    group *parse_group(XMLElement *elem,std::vector<shape *> &shapes){
-        color c;
-
-        for (auto child_elem = elem->FirstChildElement();
-             child_elem != NULL;
-             child_elem = child_elem->NextSiblingElement()) {
-            std::string type(child_elem->Name());
-            shape *s;
-            if (type == "ellipse") {
-                s = parse_ellipse(child_elem);
-            }else if(type == "circle"){
-                s = parse_circle(child_elem);
-            }else if(type == "polygon"){
-                s = parse_polygon(child_elem);
-            }else if(type == "rect"){
-                s = parse_rect(child_elem);
-            }else if(type == "polyline"){
-                s = parse_polyline(child_elem);
-            }else if(type == "line"){
-                s = parse_line(child_elem);
-            }else {
-                std::cout << "Unrecognized shape type: " << type << std::endl;
-                continue;
-            }
-            parse_transform(s, child_elem);
-            shapes.push_back(s);
-        }
-
-        return new group(c,shapes);
-    }
-
-
     std::vector<point> read_points(const char *str) {
         std::vector<point> vector;
         const char* curr;
@@ -212,10 +180,12 @@ namespace svg {
     // Loop for parsing shapes
     void parse_shapes(XMLElement *elem, std::vector<shape *> &shapes) {
         for (auto child_elem = elem->FirstChildElement();
-             child_elem != NULL;
-             child_elem = child_elem->NextSiblingElement()) {
+            child_elem != NULL;
+            child_elem = child_elem->NextSiblingElement()) {
             std::string type(child_elem->Name());
             shape *s;
+            std::cout << "shape type was : " << type << std::endl;
+
             // TODO complete
             if (type == "ellipse") {
                 s = parse_ellipse(child_elem);
@@ -230,13 +200,19 @@ namespace svg {
             }else if(type == "line"){
                 s = parse_line(child_elem);
             }else if(type == "g"){
-                s = parse_group(child_elem,shapes);
-                //parse_shapes(child_elem,shapes);
+                std::vector<shape *> groupshapes;
+                color c;
+
+                parse_shapes(child_elem,groupshapes);
+                s = new group(c,groupshapes);
+
+                std::cout << "group size is:" << groupshapes.size() << std::endl;
 
             } else {
                 std::cout << "Unrecognized shape type: " << type << std::endl;
                 continue;
             }
+
             parse_transform(s, child_elem);
             shapes.push_back(s);
         }

@@ -137,6 +137,7 @@ namespace svg {
     };
 
     group::~group() {
+        for( auto p:shapes) delete p;
         shapes.clear();
     }
 

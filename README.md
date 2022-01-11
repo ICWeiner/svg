@@ -12,4 +12,4 @@ Implemented support for circles \
 Implemented support for polygons and rectangles \
 Implemented support for polylines and lines \
 Implemented support for transformations \
-Implemented some support for groups
+Implemented support for groups
