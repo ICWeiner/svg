@@ -22,7 +22,6 @@ namespace svg {
     class circle : public ellipse {
     public:
         circle(const svg::color &fill, const point &center, const point &radius);
-        shape *duplicate() const override;
     };
 
     class polygon : public shape {

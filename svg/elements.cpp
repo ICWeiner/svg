@@ -34,10 +34,6 @@ namespace svg {
 
     }
 
-    shape *circle::duplicate() const {
-        return new circle(get_color(), center, radius);
-    }
-
 
 
     polygon::polygon(const svg::color &fill,

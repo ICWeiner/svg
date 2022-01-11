@@ -38,6 +38,10 @@ assert.h
 
 /home/diogo/Documents/svg/svg/color.hpp
 
+/home/diogo/Documents/svg/svg/elements.cpp
+elements.hpp
+/home/diogo/Documents/svg/svg/elements.hpp
+
 /home/diogo/Documents/svg/svg/elements.hpp
 shape.hpp
 /home/diogo/Documents/svg/svg/shape.hpp
