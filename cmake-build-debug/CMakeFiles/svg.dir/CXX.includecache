@@ -6,36 +6,6 @@
 
 #IncludeRegexTransform: 
 
-../external/tinyxml2/src/tinyxml2.h
-ctype.h
--
-limits.h
--
-stdio.h
--
-stdlib.h
--
-string.h
--
-stddef.h
--
-cctype
--
-climits
--
-cstdio
--
-cstdlib
--
-cstring
--
-stdint.h
--
-android/log.h
--
-assert.h
--
-
 /home/diogo/Documents/svg/svg/color.hpp
 
 /home/diogo/Documents/svg/svg/elements.cpp
@@ -73,20 +43,4 @@ point.hpp
 /home/diogo/Documents/svg/svg/point.hpp
 png_image.hpp
 /home/diogo/Documents/svg/svg/png_image.hpp
-
-/home/diogo/Documents/svg/svg/svg_to_png.cpp
-iostream
--
-tinyxml2.h
--
-sstream
--
-svg_to_png.hpp
-/home/diogo/Documents/svg/svg/svg_to_png.hpp
-elements.hpp
-/home/diogo/Documents/svg/svg/elements.hpp
-
-/home/diogo/Documents/svg/svg/svg_to_png.hpp
-fstream
--
 

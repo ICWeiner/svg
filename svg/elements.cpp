@@ -162,6 +162,7 @@ namespace svg {
     }
 
     shape *group::duplicate() const {
-        return new group(get_color(),shapes);
+        std::vector<shape *> v(shapes);
+        return new group(get_color(),v);
     }
 }
