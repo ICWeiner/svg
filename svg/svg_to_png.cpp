@@ -154,6 +154,39 @@ namespace svg {
         return new line(fill,vector);
     }
 
+    /*shape *parse_use(XMLElement *elem, std::map<std::string,int> &map,const int i){
+        color fill = parse_color(elem->Attribute("stroke"));
+        std::string id(elem ->Attribute("href"));
+
+
+        std::string type(elem->Name());
+        if (type == "ellipse") {
+            s = parse_ellipse(child_elem);
+        }else if(type == "circle"){
+            s = parse_circle(child_elem);
+        }else if(type == "polygon"){
+            s = parse_polygon(child_elem);
+        }else if(type == "rect"){
+            s = parse_rect(child_elem);
+        }else if(type == "polyline"){
+            s = parse_polyline(child_elem);
+        }else if(type == "line"){
+            s = parse_line(child_elem);
+        }else if(type == "g"){
+            std::vector<shape *> groupshapes;
+            color c;
+            parse_shapes(child_elem,groupshapes);
+            s = new group(c,groupshapes);
+        }else if(type == "use"){
+            s = parse_use();
+        }  else {
+            std::cout << "Unrecognized shape type: " << type << std::endl;
+            continue;
+        }
+
+        return new line(fill,vector);
+    }*/
+
     std::vector<point> read_points(const char *str) {
         std::vector<point> vector;
         const char* curr;
@@ -179,13 +212,22 @@ namespace svg {
 
     // Loop for parsing shapes
     void parse_shapes(XMLElement *elem, std::vector<shape *> &shapes) {
+        int i = 0;// posicao da forma no vetor
+        std::map<std::string,int> map;
         for (auto child_elem = elem->FirstChildElement();
             child_elem != NULL;
             child_elem = child_elem->NextSiblingElement()) {
             std::string type(child_elem->Name());
             shape *s;
 
-            // TODO complete
+            //std::string id = elem->Attribute("id");
+
+            if (child_elem->Attribute("id")){
+                map.insert({child_elem->Attribute("id"),i});
+                std::cout << "Added shape with ID: " << child_elem->Attribute("id") << std::endl;
+                std::cout << "With position: " << i << std::endl;
+            }
+
             if (type == "ellipse") {
                 s = parse_ellipse(child_elem);
             }else if(type == "circle"){
@@ -201,17 +243,22 @@ namespace svg {
             }else if(type == "g"){
                 std::vector<shape *> groupshapes;
                 color c;
-
                 parse_shapes(child_elem,groupshapes);
                 s = new group(c,groupshapes);
-
-            } else {
+            }else if(type == "use"){
+                //s = parse_use(child_elem,map,i);
+                std::string id(child_elem ->Attribute("href"));
+                id.erase(0,1);
+                std::cout << "ID: " << id << std::endl;
+                s = shapes.at(map.at(id));
+            } else{
                 std::cout << "Unrecognized shape type: " << type << std::endl;
                 continue;
             }
 
             parse_transform(s, child_elem);
             shapes.push_back(s);
+            i++;
         }
     }
 
