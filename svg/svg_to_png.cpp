@@ -184,7 +184,6 @@ namespace svg {
             child_elem = child_elem->NextSiblingElement()) {
             std::string type(child_elem->Name());
             shape *s;
-            std::cout << "shape type was : " << type << std::endl;
 
             // TODO complete
             if (type == "ellipse") {
@@ -205,8 +204,6 @@ namespace svg {
 
                 parse_shapes(child_elem,groupshapes);
                 s = new group(c,groupshapes);
-
-                std::cout << "group size is:" << groupshapes.size() << std::endl;
 
             } else {
                 std::cout << "Unrecognized shape type: " << type << std::endl;
