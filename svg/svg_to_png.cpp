@@ -186,8 +186,7 @@ namespace svg {
             child_elem = child_elem->NextSiblingElement()) {
             std::string type(child_elem->Name());
             shape *s;
-
-            //std::string id = elem->Attribute("id");
+            
 
             if (child_elem->Attribute("id")){
                 map.insert({child_elem->Attribute("id"),i});
@@ -213,7 +212,6 @@ namespace svg {
                 parse_shapes(child_elem,groupshapes);
                 s = new group(c,groupshapes);
             }else if(type == "use"){
-                //s = parse_use(child_elem,map,i);
                 std::string id(child_elem ->Attribute("href"));
                 id.erase(0,1);
                 std::cout << "ID: " << id << std::endl;
