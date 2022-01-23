@@ -179,20 +179,13 @@ namespace svg {
 
     // Loop for parsing shapes
     void parse_shapes(XMLElement *elem, std::vector<shape *> &shapes) {
-        int i = 0;// posicao da forma no vetor
-        std::map<std::string,int> map;
+        std::map<std::string, shape* > map;
         for (auto child_elem = elem->FirstChildElement();
-            child_elem != NULL;
-            child_elem = child_elem->NextSiblingElement()) {
+             child_elem != NULL;
+             child_elem = child_elem->NextSiblingElement()) {
             std::string type(child_elem->Name());
             shape *s;
             
-
-            if (child_elem->Attribute("id")){
-                map.insert({child_elem->Attribute("id"),i});
-                std::cout << "Added shape with ID: " << child_elem->Attribute("id") << std::endl;
-                std::cout << "With position: " << i << std::endl;
-            }
 
             if (type == "ellipse") {
                 s = parse_ellipse(child_elem);
@@ -208,22 +201,29 @@ namespace svg {
                 s = parse_line(child_elem);
             }else if(type == "g"){
                 std::vector<shape *> groupshapes;
-                color c;
+                color c = parse_color("red");
                 parse_shapes(child_elem,groupshapes);
                 s = new group(c,groupshapes);
             }else if(type == "use"){
                 std::string id(child_elem ->Attribute("href"));
                 id.erase(0,1);
+
                 std::cout << "ID: " << id << std::endl;
-                s = shapes.at(map.at(id))->duplicate();
+                s = (map.at(id))->duplicate();
             } else{
                 std::cout << "Unrecognized shape type: " << type << std::endl;
                 continue;
             }
 
+            //std::string id = elem->Attribute("id");
+            if (child_elem->Attribute("id")){
+                map.insert({child_elem->Attribute("id"),s});
+                std::cout << "inserted shape with ID: " << child_elem->Attribute("id") << std::endl;
+            }
+
             parse_transform(s, child_elem);
             shapes.push_back(s);
-            i++;
+
         }
     }
 
